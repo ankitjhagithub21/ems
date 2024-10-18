@@ -90,7 +90,7 @@ const logout = async (req, res) => {
     }
 }
 
-const getUser = async (req, res) => {
+const verifyUser = async (req, res) => {
     try {
 
     } catch (error) {
@@ -102,5 +102,5 @@ module.exports = {
     register,
     login,
     logout,
-    getUser
+    verifyUser
 }

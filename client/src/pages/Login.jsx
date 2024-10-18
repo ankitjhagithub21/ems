@@ -3,11 +3,16 @@ import Input from '../components/Input'
 import Button from '../components/Button'
 import axios from 'axios'
 import {toast} from 'react-toastify'
+import { useAuth } from '../context/AuthProvider'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
+  const {login} = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
+
   const handleLogin = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -15,8 +20,17 @@ const Login = () => {
       const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/auth/login`, {
         email, password
       })
-      console.log(response.status)
-     
+      
+      toast.success(response.data.message)
+
+      login(response.data.user)
+      localStorage.setItem('token',response.data.token)
+
+      if(response.data.role === "admin"){
+         navigate("/admin-dashboard")
+      }else{
+        navigate("/employee-dashboard")
+      }
 
     } catch (error) {
       console.log(error)
@@ -36,7 +50,7 @@ const Login = () => {
 
         <Input type={"password"} placeholder={"Enter your password"} value={password} setValue={setPassword} />
 
-        <Button text={"Log in"} />
+        <Button text={"Log in"} loading={loading}/>
 
       </form>
     </div>
