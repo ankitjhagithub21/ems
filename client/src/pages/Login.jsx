@@ -4,6 +4,8 @@ import Button from '../components/Button'
 import axios from 'axios'
 import {toast} from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { setUser } from '../redux/slices/authSlice'
 
 const Login = () => {
  
@@ -11,6 +13,7 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const dispath = useDispatch()
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -22,9 +25,9 @@ const Login = () => {
       
       toast.success(response.data.message)
 
-      
+      dispath(setUser(response.data.user))
      
-      if(response.data.role === "admin"){
+      if(response.data.user.role === "admin"){
          navigate("/admin-dashboard")
       }else{
         navigate("/employee-dashboard")

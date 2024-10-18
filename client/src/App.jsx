@@ -1,21 +1,20 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route} from 'react-router-dom'
 import Login from './pages/Login'
 import AdminDashboard from './pages/AdminDashboard'
 import "./App.css"
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import EmployeeDashboard from './pages/EmployeeDashboard';
-import { useSelector } from 'react-redux';
+
 
 
 const App = () => {
-const {user} = useSelector(state=>state.auth)
-console.log(user)
+
   return (
     <BrowserRouter>
       <ToastContainer />
       <Routes>
-        <Route path='/' element={<Navigate to={"/admin-dashboard"} />} />
+        <Route path='/' element={<AdminDashboard/>} />
         <Route path='/login' element={<Login />} />
         <Route path='/admin-dashboard' element={<AdminDashboard />} />
         <Route path='/employee-dashboard' element={<EmployeeDashboard />} />
