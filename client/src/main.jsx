@@ -1,11 +1,11 @@
-
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
-import {AuthContext} from "./context/AuthProvider"
+import { store } from './redux/store'
+import { Provider } from 'react-redux'
 
 createRoot(document.getElementById('root')).render(
-  <AuthContext>
+  <Provider store={store}>
     <App />
-  </AuthContext>,
+  </Provider>,
 )

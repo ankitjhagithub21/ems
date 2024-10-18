@@ -3,11 +3,10 @@ import Input from '../components/Input'
 import Button from '../components/Button'
 import axios from 'axios'
 import {toast} from 'react-toastify'
-import { useAuth } from '../context/AuthProvider'
 import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
-  const {login} = useAuth()
+ 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -23,9 +22,8 @@ const Login = () => {
       
       toast.success(response.data.message)
 
-      login(response.data.user)
-      localStorage.setItem('token',response.data.token)
-
+      
+     
       if(response.data.role === "admin"){
          navigate("/admin-dashboard")
       }else{
