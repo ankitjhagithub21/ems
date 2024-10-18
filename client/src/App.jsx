@@ -1,7 +1,7 @@
 import {BrowserRouter,Routes,Route,Navigate} from 'react-router-dom'
-import "./App.css"
 import Login from './pages/Login'
 import AdminDashboard from './pages/AdminDashboard'
+import "./App.css"
 
 const App = () => {
   return (
