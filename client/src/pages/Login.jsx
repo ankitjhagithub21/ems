@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import Input from '../components/Input'
 import Button from '../components/Button'
+import axios from 'axios'
+import {toast} from 'react-toastify'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -10,9 +12,16 @@ const Login = () => {
     e.preventDefault()
     setLoading(true)
     try {
+      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/auth/login`, {
+        email, password
+      })
+      console.log(response.status)
+     
 
     } catch (error) {
-
+      console.log(error)
+      toast.error(error.response.data.message)
+     
     } finally {
       setLoading(false)
     }
