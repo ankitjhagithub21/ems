@@ -1,8 +1,13 @@
 import React from 'react'
 
-const Button = ({text}) => {
+const Button = ({text,loading}) => {
   return (
-    <button className='btn btn-primary'>{text}</button>
+    <button className='btn btn-primary'>
+      {
+        loading && <span className="loading loading-spinner"></span>
+      }
+      {text}
+    </button>
   )
 }
 
