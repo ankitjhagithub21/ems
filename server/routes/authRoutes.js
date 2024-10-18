@@ -1,10 +1,10 @@
 const express = require('express')
-const { register, login, logout, getUser, verifyUser } = require('../controllers/authController')
+const { login,  verifyUser } = require('../controllers/authController')
+const verifyToken = require('../middlewares/verifyToken')
 const authRouter = express.Router()
 
-// authRouter.post("/register",register)
+
 authRouter.post("/login",login)
-// authRouter.get("/logout",logout)
-authRouter.get("/verify",verifyUser)
+authRouter.get("/verify",verifyToken,verifyUser)
 
 module.exports = authRouter
