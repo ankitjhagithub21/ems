@@ -21,7 +21,7 @@ const AdminDashboard = () => {
       <Navbar />
       <div className="drawer lg:drawer-open">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content flex flex-col">
+        <div className="drawer-content p-5">
           {/* This will render the nested routes */}
           <Outlet />
         </div>
