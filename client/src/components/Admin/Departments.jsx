@@ -2,9 +2,10 @@ import { Link } from "react-router-dom"
 import Heading from "../common/Heading"
 
 const Departments = () => {
+  
   return (
     <div>
-      <Heading text={"Department List"}/>
+      <Heading text={"Manage Departments"}/>
       <Link to={"/admin-dashboard/add-department"}>Add Department</Link>
     </div>
   )
