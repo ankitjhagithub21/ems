@@ -10,6 +10,7 @@ import EmployeeDashboard from './pages/EmployeeDashboard';
 import Summary from './components/Admin/Summary';
 import Departments from './components/Admin/Departments';
 import ProtectedRoute from './utils/ProtectedRoute';
+import AddDepartment from './components/Admin/AddDepartment';
 
 const App = () => {
   useFetchUser();
@@ -42,6 +43,7 @@ const App = () => {
         >
           <Route index element={<Summary />} />
           <Route path="departments" element={<Departments />} />
+          <Route path="add-department" element={<AddDepartment />} />
         </Route>
 
         {/* Employee Dashboard Route */}
