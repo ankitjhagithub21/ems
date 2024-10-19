@@ -20,11 +20,11 @@ const addDepartment = async (req, res) => {
 
 const getAllDepartments = async (req, res) => {
     try {
-        const { departmentName, description } = req.body;
+     
 
         const departments = await Department.find()
 
-        if (!departments || departments.length == 0) {
+        if (!departments) {
             return res.status(400).json({ message: "No department found." })
 
         }

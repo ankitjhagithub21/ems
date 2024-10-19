@@ -82,16 +82,13 @@ const addEmployee = async (req, res) => {
 };
 
 
-
-
-
 const getAllEmployees = async (req, res) => {
     try {
-        const { employeeName, description } = req.body;
+        
 
-        const employees = await employee.find()
+        const employees = await Employee.find()
 
-        if (!employees || employees.length == 0) {
+        if (!employees) {
             return res.status(400).json({ message: "No employee found." })
 
         }

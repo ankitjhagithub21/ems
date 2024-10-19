@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,6 +11,7 @@ import Summary from './components/Admin/Summary';
 import Departments from './components/Admin/Departments';
 import ProtectedRoute from './utils/ProtectedRoute';
 import AddDepartment from './components/Admin/AddDepartment';
+import Employees from './components/Admin/Employees';
 
 const App = () => {
   useFetchUser();
@@ -43,6 +44,7 @@ const App = () => {
         >
           <Route index element={<Summary />} />
           <Route path="departments" element={<Departments />} />
+          <Route path="employees" element={<Employees />} />
           <Route path="add-department" element={<AddDepartment />} />
         </Route>
 

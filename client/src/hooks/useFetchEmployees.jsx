@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import { getDepartments } from '../api/admin/department'
+import { getEmployees } from '../api/admin/employee'
 
-const useFetchDepartments = () => {
-    const [departments, setDepartments] = useState([])
+
+const useFetchEmployees = () => {
+    const [employees, setEmployees] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
@@ -10,9 +11,9 @@ const useFetchDepartments = () => {
         const getData = async () => {
 
             try {
-                const res = await getDepartments()
+                const res = await getEmployees()
                 if (res.status === 200) {
-                    setDepartments(res.data)
+                    setEmployees(res.data)
                 }
 
             } catch (error) {
@@ -24,7 +25,7 @@ const useFetchDepartments = () => {
         }
         getData()
     }, [])
-    return { departments,setDepartments, loading, error }
+    return { employees, setEmployees, loading, error }
 }
 
-export default useFetchDepartments
+export default useFetchEmployees
