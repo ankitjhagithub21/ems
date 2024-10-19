@@ -52,7 +52,7 @@ const login = async (req, res) => {
     try {
 
         const { email, password } = req.body;
-        const user = await User.findOne({ email })
+        let user = await User.findOne({ email })
 
         if (!user) {
             return res.status(404).json({ message: "user not found." })
@@ -79,7 +79,8 @@ const login = async (req, res) => {
             user: {
                 _id: user._id,
                 role: user.role,
-                name: user.name
+                name: user.name,
+                profileImage:user.profileImage
             }
         })
 
