@@ -35,6 +35,7 @@ const AddDepartment = () => {
 
   }
 
+  
   return (
     <div className='max-w-lg p-5  mx-auto my-12'>
       <Heading text={"Add new department"} />

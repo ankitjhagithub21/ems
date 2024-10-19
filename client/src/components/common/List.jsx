@@ -28,7 +28,7 @@ const List = ({ columns, rows, fields, onEdit, onDelete }) => {
                 ))}
                 <td className='flex gap-3 items-center'>
                   <FaTrash size={18} className='text-red-600 cursor-pointer' onClick={()=>onDelete(row._id)} />
-                  <FaEdit size={21} className='text-primary cursor-pointer' onClick={() => onEdit(row._id)} />
+                  <FaEdit size={21} className='text-primary cursor-pointer' onClick={() => onEdit(row)} />
                 </td>
 
               </tr>
