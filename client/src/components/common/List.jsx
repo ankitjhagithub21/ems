@@ -1,7 +1,8 @@
 import { FaTrash, FaEdit } from 'react-icons/fa'
 
-const List = ({ columns, rows, fields }) => {
+const List = ({ columns, rows, fields, onEdit, onDelete }) => {
 
+  
 
   return (
     <div className="overflow-x-auto">
@@ -26,8 +27,8 @@ const List = ({ columns, rows, fields }) => {
                   <td key={i}>{row[field]}</td>
                 ))}
                 <td className='flex gap-3 items-center'>
-                  <FaTrash size={18} className='text-red-600 cursor-pointer' />
-                  <FaEdit size={21} className='text-primary cursor-pointer' />
+                  <FaTrash size={18} className='text-red-600 cursor-pointer' onClick={()=>onDelete(row._id)} />
+                  <FaEdit size={21} className='text-primary cursor-pointer' onClick={() => onEdit(row._id)} />
                 </td>
 
               </tr>

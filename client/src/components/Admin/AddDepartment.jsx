@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
-import axios from 'axios'
 import Input from '../common/Input'
 import Textarea from '../common/Textarea'
 import Button from '../common/Button'
 import Heading from '../common/Heading'
 import { toast } from "react-toastify"
 import { addNewDepartment } from '../../api/admin/department'
-axios.defaults.withCredentials = true
+
 
 const AddDepartment = () => {
   const [departmentName, setDepartmentName] = useState('')
@@ -17,7 +16,7 @@ const AddDepartment = () => {
     setLoading(true)
 
     try {
-      const response = await addNewDepartment({departmentName,description})
+      const response = await addNewDepartment({ departmentName, description })
 
       if (response.status === 201) {
         toast.success("Department added successfully.")
