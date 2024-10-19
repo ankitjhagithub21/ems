@@ -9,21 +9,23 @@ import { removeDepartment } from "../../api/admin/department";
 import { toast } from "react-toastify";
 import EditDepartment from "./EditDepartment";
 import { useState, useRef } from "react";
+import Search from "../common/Search";
 
 axios.defaults.withCredentials = true;
 
 const Departments = () => {
-  const { departments, loading, error } = useFetchDepartments();
+  const { departments,setDepartments, loading, error } = useFetchDepartments();
   const [editedDepartment, setEditedDepartment] = useState(null);
-  const modalRef = useRef(null); 
-
+  const modalRef = useRef(null);
   const columns = ["S.No", "Department Name", "Action"];
   const fields = ["departmentName"];
 
   const onDelete = async (id) => {
     try {
       const res = await removeDepartment(id);
+      setDepartments(departments.filter((dep)=>dep._id !== id))
       toast.success(res.data.message);
+
     } catch (error) {
       toast.error(error.response?.data?.message || "Error deleting department");
       console.log(error);
@@ -32,8 +34,13 @@ const Departments = () => {
 
   const onEdit = (department) => {
     setEditedDepartment(department);
-    modalRef.current?.showModal(); 
+    modalRef.current?.showModal();
+
   };
+
+  const onUpdate = (department) =>{
+    setDepartments(departments.map((dep)=> dep._id === department._id ? department : dep ))
+  }
 
 
   if (loading) return <Loader />;
@@ -41,9 +48,12 @@ const Departments = () => {
 
   return (
     <div>
-      <EditDepartment ref={modalRef} department={editedDepartment} />
+      <EditDepartment ref={modalRef} department={editedDepartment} onUpdate={onUpdate}/>
       <Heading text={"Manage Departments"} />
-      <Link to={"/admin-dashboard/add-department"}>Add Department</Link>
+      <div className="flex items-center justify-between mb-5">
+        <Search />
+        <Link to={"/admin-dashboard/add-department"} className="btn btn-primary" >Add Department</Link>
+      </div>
       <List
         columns={columns}
         rows={departments}

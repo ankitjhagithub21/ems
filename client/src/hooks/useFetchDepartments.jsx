@@ -24,7 +24,7 @@ const useFetchDepartments = () => {
         }
         getData()
     }, [])
-    return { departments, loading, error }
+    return { departments,setDepartments, loading, error }
 }
 
 export default useFetchDepartments

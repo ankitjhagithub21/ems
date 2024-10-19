@@ -20,7 +20,7 @@ const List = ({ columns, rows, fields, onEdit, onDelete }) => {
         <tbody>
           {/* row 1 */}
           {
-            rows.map((row, index) => {
+            rows.length===0 ? <p>No data found.</p> : rows.map((row, index) => {
               return <tr key={row._id} className="hover:bg-base-200">
                 <th>{index + 1}</th>
                 {fields.map((field, i) => (

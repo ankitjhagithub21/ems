@@ -5,7 +5,7 @@ import { useState, forwardRef, useEffect } from "react";
 import { updateDepartment } from "../../api/admin/department";
 import { toast } from "react-toastify";
 
-const EditDepartment = forwardRef(({ department }, ref) => {
+const EditDepartment = forwardRef(({ department, onUpdate}, ref) => {
   const [departmentName, setDepartmentName] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
@@ -30,6 +30,7 @@ const EditDepartment = forwardRef(({ department }, ref) => {
 
       if (response.status === 200) {
         toast.success("Department updated successfully.");
+        onUpdate(response.data)
         setDepartmentName("");
         setDescription("");
         ref.current.close(); // Close the modal
