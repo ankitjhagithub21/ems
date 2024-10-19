@@ -4,6 +4,7 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const connectDb = require('./db/conn')
 const authRouter = require('./routes/authRoutes')
+const departmentRouter = require('./routes/departmentRoutes')
 const app = express()
 
 const port = process.env.PORT || 3000
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
 })
 
 app.use("/api/auth",authRouter)
+app.use("/api/departments",departmentRouter)
 
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`)

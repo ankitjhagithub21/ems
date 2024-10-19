@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import axios from "axios"
 import { setLoading, setUser } from '../redux/slices/authSlice';
-axios.defaults.withCredentials = true;
+
 
 const useFetchUser = () => {
     const dispatch = useDispatch()
