@@ -5,6 +5,7 @@ import Button from '../common/Button'
 import Heading from '../common/Heading'
 import { toast } from "react-toastify"
 import { addNewDepartment } from '../../api/admin/department'
+import BackButton from '../common/BackButton'
 
 
 const AddDepartment = () => {
@@ -38,6 +39,7 @@ const AddDepartment = () => {
   
   return (
     <div className='max-w-lg p-5  mx-auto my-12'>
+    <BackButton/>     
       <Heading text={"Add new department"} />
       <form className='flex flex-col gap-3' onSubmit={handleSubmit}>
         <Input type="text" placeholder={"Enter department name"} value={departmentName} setValue={setDepartmentName} />
