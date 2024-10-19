@@ -91,7 +91,15 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
     try {
-
+        return res.cookie('token', '', {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            maxAge: Date.now()
+        }).status(200).json({
+            message: "Logout successfull.",
+           
+        })
     } catch (error) {
         return res.status(500).json({ message: "Server error" })
     }
