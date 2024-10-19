@@ -5,6 +5,7 @@ import Textarea from '../common/Textarea'
 import Button from '../common/Button'
 import Heading from '../common/Heading'
 import { toast } from "react-toastify"
+import { addNewDepartment } from '../../api/admin/department'
 axios.defaults.withCredentials = true
 
 const AddDepartment = () => {
@@ -16,10 +17,7 @@ const AddDepartment = () => {
     setLoading(true)
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/departments`, {
-        departmentName,
-        description
-      })
+      const response = await addNewDepartment({departmentName,description})
 
       if (response.status === 201) {
         toast.success("Department added successfully.")

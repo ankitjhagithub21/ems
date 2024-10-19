@@ -37,6 +37,24 @@ const getAllDepartments = async (req, res) => {
     }
 }
 
+const getDepartmentById = async (req, res) => {
+    try {
+        const { departmentId } = req.params;
+
+        const department = await Department.findById(departmentId)
+
+        if (!department) {
+            return res.status(404).json({ message: "Department not found." })
+
+        }
+        return res.status(200).json(department)
+
+
+    } catch (error) {
+        return res.status(500).json({ message: "server error" })
+    }
+}
+
 const editDepartment = async (req, res) => {
     try {
         const { departmentId } = req.params;
@@ -71,9 +89,31 @@ const editDepartment = async (req, res) => {
 };
 
 
+const deleteDepartment = async (req, res) => {
+    try {
+        const { departmentId } = req.params;
+
+        const department = await Department.findByIdAndDelete(departmentId)
+
+        if (!department) {
+            return res.status(404).json({ message: "Department not found." })
+
+        }
+        return res.status(200).json({message:"Department deleted."})
+
+
+    } catch (error) {
+        return res.status(500).json({ message: "server error" })
+    }
+}
+
+
+
 
 module.exports = {
     addDepartment,
     getAllDepartments,
-    editDepartment
+    getDepartmentById,
+    editDepartment,
+    deleteDepartment
 }
