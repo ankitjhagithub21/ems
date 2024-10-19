@@ -28,8 +28,8 @@ const Navbar = () => {
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
             <div className="w-10 rounded-full">
               <img
-                alt="Tailwind CSS Navbar component"
-                src={user.profileImage ? user.profileImage : "https://cdn-icons-png.flaticon.com/512/149/149071.png"}/>
+                alt="user"
+                src={user.profileImage ? user.profileImage : "/user.png"}/>
             </div>
           </div>
           <ul
