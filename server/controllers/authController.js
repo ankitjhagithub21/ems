@@ -67,14 +67,14 @@ const login = async (req, res) => {
 
         const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "1d" })
 
-        res.cookie('token', token, {
+       
+
+       res.cookie('token', token, {
             httpOnly: true,
             secure: true,
             sameSite: "none",
             maxAge: 1 * 24 * 60 * 60 * 1000
-        })
-
-        res.status(200).json({
+        }).status(200).json({
             message: `Welcome back ${user.name}`,
             user: {
                 _id: user._id,
@@ -98,7 +98,7 @@ const logout = async (req, res) => {
 }
 
 const verifyUser = async (req, res) => {
-    return res.status(200).json({user:req.user})
+    return res.status(200).json({ user: req.user })
 }
 
 module.exports = {

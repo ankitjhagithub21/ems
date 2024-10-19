@@ -6,6 +6,7 @@ import {toast} from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setUser } from '../redux/slices/authSlice'
+axios.defaults.withCredentials = true
 
 const Login = () => {
  
@@ -21,6 +22,7 @@ const Login = () => {
     try {
       const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/auth/login`, {
         email, password
+        
       })
       
       toast.success(response.data.message)
