@@ -23,7 +23,7 @@ const Navbar = () => {
         </a>
       </div>
       <div className="flex-none gap-2">
-       <p>Welcome, {user.name}</p>
+       <p>Welcome {user.name}</p>
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
             <div className="w-10 rounded-full">

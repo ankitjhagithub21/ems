@@ -1,12 +1,12 @@
-import React from 'react'
+
 import Navbar from '../components/Navbar'
-import Sidebar from '../components/Sidebar'
+import AdminSidebar from '../components/AdminSidebar'
 
 const AdminDashboard = () => {
   return (
     <div>
       <Navbar/>
-      <Sidebar/>
+      <AdminSidebar/>
     </div>
   )
 }
