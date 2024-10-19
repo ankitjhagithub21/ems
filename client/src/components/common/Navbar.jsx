@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-import { setUser } from '../redux/slices/authSlice'
+import { setUser } from '../../redux/slices/authSlice'
 axios.defaults.withCredentials = true
 
 const Navbar = () => {

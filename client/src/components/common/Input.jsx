@@ -1,4 +1,3 @@
-import React from 'react'
 
 const Input = ({type,placeholder,value,setValue}) => {
   return (

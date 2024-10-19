@@ -1,14 +1,15 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import Login from './pages/Login';
-import AdminDashboard from './pages/AdminDashboard';
-import EmployeeDashboard from './pages/EmployeeDashboard';
-import PrivateRoute from './utils/PrivateRoute';
 import useFetchUser from './hooks/useFetchUser';
 import './App.css';
+import AdminDashboard from './pages/AdminDashboard';
+import EmployeeDashboard from './pages/EmployeeDashboard';
+import Summary from './components/Admin/Summary';
+import Departments from './components/Admin/Departments';
+import ProtectedRoute from './utils/ProtectedRoute';
 
 const App = () => {
   useFetchUser();
@@ -21,45 +22,48 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <ToastContainer 
-        position="top-center" 
-        hideProgressBar 
-        autoClose={1000} 
-        closeButton={false} 
+      <ToastContainer
+        position="top-center"
+        hideProgressBar
+        autoClose={1000}
+        closeButton={false}
       />
       <Routes>
-        <Route 
-          path="/" 
-          element={user ? <Navigate to={getDashboardRoute()} replace /> : <Navigate to="/login" replace />} 
+        {/* Root Route: Redirect to dashboard or login based on user */}
+        <Route
+          path="/"
+          element={user ? <Navigate to={getDashboardRoute()} replace /> : <Navigate to="/login" replace />}
         />
 
-        <Route 
-          path="/admin-dashboard" 
-          element={
-            <PrivateRoute role="admin">
-              <AdminDashboard />
-            </PrivateRoute>
-          } 
+        {/* Admin Dashboard Routes */}
+        <Route
+          path="/admin-dashboard/*"
+          element={<ProtectedRoute role="admin"><AdminDashboard /></ProtectedRoute>}
+        >
+          <Route index element={<Summary />} />
+          <Route path="departments" element={<Departments />} />
+        </Route>
+
+        {/* Employee Dashboard Route */}
+        <Route
+          path="/employee-dashboard"
+          element={<ProtectedRoute role="employee"><EmployeeDashboard /></ProtectedRoute>}
         />
 
-        <Route 
-          path="/employee-dashboard" 
-          element={
-            <PrivateRoute role="employee">
-              <EmployeeDashboard />
-            </PrivateRoute>
-          } 
+        {/* Login Route */}
+        <Route
+          path="/login"
+          element={user ? <Navigate to="/" replace /> : <Login />}
         />
 
-        <Route 
-          path="/login" 
-          element={user ? <Navigate to="/" replace /> : <Login />} 
-        />
-
+        {/* Fallback Route */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );
 };
+
+
+
 
 export default App;
