@@ -3,7 +3,6 @@ import { FaTrash, FaEdit } from 'react-icons/fa'
 const List = ({ columns, rows, fields, onEdit, onDelete }) => {
 
   
-
   return (
     <div className="overflow-x-auto">
       <table className="table">

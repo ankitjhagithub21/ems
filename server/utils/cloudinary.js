@@ -1,4 +1,4 @@
-const fs = require("fs")
+const fs = require('fs');
 const cloudinary = require('cloudinary').v2;
 
 cloudinary.config({
@@ -7,50 +7,30 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-
+// Upload image to Cloudinary
 const uploadImage = async (localFilePath) => {
-  if (!localFilePath) {
-      return null;
-  }
-
-  const options = {
-    use_filename: true,
-    unique_filename: false,
-    overwrite: true,
-  };
-
-  try {
-      // Upload the image to Cloudinary
-      const response = await cloudinary.uploader.upload(localFilePath, options);
-      // Remove the local file after upload
-      fs.unlinkSync(localFilePath);
-
-      // Return the public URL and public_id (for deletion)
-      return {
-          secureUrl: response.secure_url, // Store secure_url for image access
-          publicId: response.public_id // Store public_id for deletion
-      };
-
-  } catch (error) {
-      fs.unlinkSync(localFilePath); // Clean up the local file if upload fails
-      console.error(error);
-      return null;
-  }
+    try {
+        const result = await cloudinary.uploader.upload(localFilePath, {
+            use_filename: true,
+            unique_filename: false,
+            overwrite: true,
+        });
+        fs.unlinkSync(localFilePath);  // Delete local file after upload
+        return { secureUrl: result.secure_url, publicId: result.public_id };
+    } catch (error) {
+        fs.unlinkSync(localFilePath);  // Cleanup on failure
+        console.error('Cloudinary Upload Error:', error);
+        return null;
+    }
 };
 
-
-const deleteImage = async (cloudinaryId) => {
-  try {
-      if (!cloudinaryId) return;
-      await cloudinary.uploader.destroy(cloudinaryId); 
-  } catch (error) {
-      console.error('Error deleting image from Cloudinary:', error);
-  }
+// Delete image from Cloudinary
+const deleteImage = async (publicId) => {
+    try {
+        await cloudinary.uploader.destroy(publicId);
+    } catch (error) {
+        console.error('Cloudinary Deletion Error:', error);
+    }
 };
 
-
-
-module.exports = {
-  uploadImage,
-  deleteImage
-}
+module.exports = { uploadImage, deleteImage };

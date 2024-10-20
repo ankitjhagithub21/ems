@@ -1,92 +1,83 @@
 const Employee = require("../models/Employee")
 const User = require("../models/User")
 const bcryptjs = require('bcryptjs')
-const validator = require('validator')
-const { uploadImage } = require("../utils/cloudinary")
+const { uploadImage, deleteImage } = require("../utils/cloudinary")
+
 
 const addEmployee = async (req, res) => {
     try {
-        const { 
-            name,
-            email, 
-            employeeId,
-            dob,
-            gender,
-            maritalStatus,  
-            designation,
-            department,
-            salary,         
-            password,
-            role 
+        const {
+            name, email, employeeId, dob, gender, maritalStatus,
+            designation, department, salary, password, role
         } = req.body;
 
         // Check if user already exists
-        const user = await User.findOne({ email });
-        if (user) {
-            return res.status(400).json({ message: "User already registered as employee." });
+        const userExists = await User.findOne({ email });
+        if (userExists) {
+            return res.status(400).json({ message: 'User already registered as employee.' });
         }
 
-        // Validate email
-        if (!validator.isEmail(email)) {
-            return res.status(400).json({ message: "Please enter a valid email address." });
-        }
-
-        // Validate password strength
-        if (!validator.isStrongPassword(password)) {
-            return res.status(400).json({ message: "Please set a strong password." });
-        }
-
-        // Hash the password
+     
+        // Hash password
         const hashedPassword = await bcryptjs.hash(password, 10);
 
-        let result;
+        // Upload profile image (if provided)
+        let imageResult = {};
         if (req.file) {
-            result = await uploadImage(req.file.path);
-            if (!result) {
-                return res.status(400).json({ message: "Image upload failed." });
+            imageResult = await uploadImage(req.file.path);
+            if (!imageResult) {
+                return res.status(400).json({ message: 'Image upload failed.' });
             }
         }
 
-        // Create new user
+        // Create new User
         const newUser = new User({
             name,
             email,
             password: hashedPassword,
             role,
-            profileImage: result?.secureUrl || '',  
-            publicId: result?.publicId || ''        
+            profileImage: imageResult.secureUrl || '',
+            publicId: imageResult.publicId || ''
         });
 
         const savedUser = await newUser.save();
 
-        if (savedUser) {
-            
-            const newEmployee = new Employee({
-                userId: savedUser._id,
-                employeeId,
-                dob,
-                gender,
-                maritalStatus,  
-                designation,
-                department,
-                salary          
-            });
+        // Create new Employee entry
+        const newEmployee = new Employee({
+            userId: savedUser._id,
+            employeeId,
+            dob,
+            gender,
+            maritalStatus,
+            designation,
+            department,
+            salary
+        });
 
-            const savedEmployee = await newEmployee.save();
-            return res.status(201).json(savedEmployee);
-        }
+        const savedEmployee = await newEmployee.save();
+        return res.status(201).json(savedEmployee);
+
     } catch (error) {
-        
-        return res.status(500).json({ message: "Server error" });
+        console.error('Server Error:', error);
+        return res.status(500).json({ message: 'Server error' });
     }
 };
+
+
+
 
 
 const getAllEmployees = async (req, res) => {
     try {
         
 
-        const employees = await Employee.find()
+        const employees = await Employee.find().populate({
+            path:"userId",
+            select:"name profileImage"
+        }).populate({
+            path:"department",
+            select:"departmentName"
+        })
 
         if (!employees) {
             return res.status(400).json({ message: "No employee found." })
@@ -152,24 +143,33 @@ const editEmployee = async (req, res) => {
     }
 };
 
-
 const deleteEmployee = async (req, res) => {
     try {
         const { employeeId } = req.params;
 
-        const employee = await employee.findByIdAndDelete(employeeId)
+        // Find and delete employee by ID
+        const employee = await Employee.findByIdAndDelete(employeeId);
 
         if (!employee) {
-            return res.status(404).json({ message: "employee not found." })
-
+            return res.status(404).json({ message: "Employee not found." });
         }
-        return res.status(200).json({message:"employee deleted."})
 
+        // Find the associated user (assuming `userId` is stored in employee)
+        const user = await User.findByIdAndDelete(employee.userId);
+
+        if (user && user.publicId) {
+            // Delete the user's profile image from Cloudinary
+            await deleteImage(user.publicId);
+        }
+
+        return res.status(200).json({ message: "Employee deleted successfully." });
 
     } catch (error) {
-        return res.status(500).json({ message: "server error" })
+        console.error("Server error:", error);
+        return res.status(500).json({ message: "Server error" });
     }
-}
+};
+
 
 
 
