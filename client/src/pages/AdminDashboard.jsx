@@ -12,7 +12,7 @@ const AdminDashboard = () => {
     { text: "Employee", path: "employees", icon: <FaUsers /> },
     { text: "Departments", path: "departments", icon: <FaBuilding /> },
     { text: "Leaves", path: "leaves", icon: <FaCalendarAlt /> },
-    { text: "Salary", path: "salary", icon: <PiMoneyWavyFill /> },
+    { text: "Salary", path: "salaries", icon: <PiMoneyWavyFill /> },
     { text: "Settings", path: "settings", icon: <IoMdSettings /> },
   ];
 

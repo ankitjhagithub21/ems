@@ -13,7 +13,8 @@ import ProtectedRoute from './utils/ProtectedRoute';
 import AddDepartment from './components/Admin/AddDepartment';
 import Employees from './components/Admin/Employees';
 import AddEmployee from './components/Admin/AddEmployee';
-import EditEmployee from './components/Admin/EditEmployee';
+import AddSalary from './components/Admin/AddSalary';
+import Salaries from './components/Admin/Salaries';
 
 const App = () => {
   useFetchUser();
@@ -47,8 +48,10 @@ const App = () => {
           <Route index element={<Summary />} />
           <Route path="departments" element={<Departments />} />
           <Route path="employees" element={<Employees />} />
+          <Route path="salaries" element={<Salaries />} />
           <Route path="add-department" element={<AddDepartment />} />
           <Route path="add-employee" element={<AddEmployee />} />
+          <Route path="add-salary" element={<AddSalary />} />
          
         </Route>
 

@@ -84,7 +84,6 @@ const AddEmployee = () => {
   return (
     <div className="p-5 mx-auto">
       <BackButton />
-     
 
       <form className="flex flex-col gap-6   max-w-2xl w-full mx-auto" onSubmit={handleSubmit}>
         {/* Image Upload Section */}
@@ -96,6 +95,7 @@ const AddEmployee = () => {
               className="w-32 h-32 rounded-full shadow-lg object-cover"
             />
           </label>
+          <Heading text={"Add new employee"}/>
           <input
             type="file"
             className="hidden"
