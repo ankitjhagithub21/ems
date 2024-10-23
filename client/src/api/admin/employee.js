@@ -30,6 +30,11 @@ export const removeEmployee = async(id) => {
     return res;
 }
 
+export const getEmployeesByDepartMentId = async(departmentId) =>{
+    const res = await axios.get(`${baseUrl}/department/${departmentId}`)
+    return res;
+}
+
 
 
 

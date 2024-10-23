@@ -64,9 +64,6 @@ const addEmployee = async (req, res) => {
 };
 
 
-
-
-
 const getAllEmployees = async (req, res) => {
     try {
         
@@ -189,6 +186,29 @@ const deleteEmployee = async (req, res) => {
 };
 
 
+const getEmployeesByDepartMentId = async (req, res) => {
+    try {
+        const { departmentId } = req.params;
+
+        const employees = await Employee.find({department:departmentId}).populate({
+            path:"userId",
+            select:"name"
+        })
+
+        if (!employees) {
+            return res.status(404).json({ message: "Employee not found." })
+
+        }
+
+        return res.status(200).json(employees)
+
+
+    } catch (error) {
+        return res.status(500).json({ message: "server error" })
+    }
+}
+
+
 
 
 
@@ -197,5 +217,6 @@ module.exports = {
     getAllEmployees,
     getEmployeeById,
     editEmployee,
-    deleteEmployee
+    deleteEmployee,
+    getEmployeesByDepartMentId
 }
