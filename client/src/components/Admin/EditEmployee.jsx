@@ -4,10 +4,10 @@ import Button from '../common/Button';
 import Heading from '../common/Heading';
 import { toast } from 'react-toastify';
 import { updateEmployee } from '../../api/admin/employee';
-import useFetchDepartments from '../../hooks/useFetchDepartments';
+import { formatDate } from '../../helpers/formateDate';
 
 const EditEmployee = forwardRef(({ employee, onUpdate }, ref) => {
-  const { departments } = useFetchDepartments();
+
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -18,10 +18,9 @@ const EditEmployee = forwardRef(({ employee, onUpdate }, ref) => {
   const [salary, setSalary] = useState('');
   const [designation, setDesignation] = useState('');
   const [role, setRole] = useState('');
-  const [department, setDepartment] = useState('');
   const [image, setImage] = useState(null);
-  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null)
 
   // Populate form with employee data when the employee prop changes
   useEffect(() => {
@@ -29,18 +28,23 @@ const EditEmployee = forwardRef(({ employee, onUpdate }, ref) => {
       setName(employee.userId.name || '');
       setEmail(employee.userId.email || '');
       setEmployeeId(employee.employeeId || '');
-      setDob(employee.dob || '');
+      setDob(formatDate(employee.dob) || '');
       setGender(employee.gender || '');
       setMaritalStatus(employee.maritalStatus || '');
       setSalary(employee.salary || '');
       setDesignation(employee.designation || '');
       setRole(employee.userId.role || '');
-      setDepartment(employee.department || '');
+      setPreviewImage(employee.userId.profileImage || '/user.png')
     }
-    console.log(employee)
+   
   }, [employee]);
 
-  
+
+  const handleFileChange = (e) => {
+    setImage(e.target.files[0])
+    setPreviewImage(URL.createObjectURL(e.target.files[0]))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -51,11 +55,9 @@ const EditEmployee = forwardRef(({ employee, onUpdate }, ref) => {
     formData.append('employeeId', employeeId);
     formData.append('role', role);
     formData.append('gender', gender);
-    formData.append('department', department);
     formData.append('maritalStatus', maritalStatus);
     formData.append('salary', salary);
     formData.append('designation', designation);
-    formData.append('password', password);
     if (image) formData.append('image', image);
 
     setLoading(true);
@@ -65,7 +67,7 @@ const EditEmployee = forwardRef(({ employee, onUpdate }, ref) => {
       if (response.status === 200) {
         toast.success('Employee updated successfully.');
         onUpdate(response.data);
-        ref.current.close(); 
+        ref.current.close();
       }
     } catch (error) {
       toast.error(error.response?.data?.message || 'Error updating employee.');
@@ -93,9 +95,13 @@ const EditEmployee = forwardRef(({ employee, onUpdate }, ref) => {
           </button>
         </div>
         <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
+          <label htmlFor="image" className='w-fit mx-auto'>
+            <img src={previewImage} alt="profile_pic" className='w-28 h-28 border rounded-full object-cover cursor-pointer' />
+            <input type="file" name='image' id='image' onChange={handleFileChange} className="input input-neutral hidden" />
+          </label>
           <Input type="text" placeholder="Name" value={name} setValue={setName} />
           <Input type="email" placeholder="Email" value={email} setValue={setEmail} />
-          <input type="file" onChange={(e) => setImage(e.target.files[0])} className="input input-neutral" />
+
           <Input type="text" placeholder="Employee ID" value={employeeId} setValue={setEmployeeId} />
           <Input type="date" value={dob} setValue={setDob} />
 
@@ -115,12 +121,7 @@ const EditEmployee = forwardRef(({ employee, onUpdate }, ref) => {
           <Input type="text" placeholder="Designation" value={designation} setValue={setDesignation} />
           <Input type="number" placeholder="Salary" value={salary} setValue={setSalary} />
 
-          <select value={department} onChange={(e) => setDepartment(e.target.value)} className="select select-primary">
-            <option value="" disabled>Select Department</option>
-            {departments.map((dep) => (
-              <option key={dep._id} value={dep._id}>{dep.departmentName}</option>
-            ))}
-          </select>
+         
 
           <select value={role} onChange={(e) => setRole(e.target.value)} className="select select-primary">
             <option value="" disabled>Select Role</option>

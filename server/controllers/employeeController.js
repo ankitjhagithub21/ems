@@ -151,7 +151,7 @@ const editEmployee = async (req, res) => {
         const updatedEmployee = await Employee.findByIdAndUpdate(
             id,
             { ...req.body }, // Update employee with new details from the request body
-            { new: true } // Return the updated employee
+            { new: true ,runValidators:true} // Return the updated employee
         );
 
         return res.status(200).json(updatedEmployee);

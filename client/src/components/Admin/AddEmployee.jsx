@@ -20,8 +20,16 @@ const AddEmployee = () => {
   const [role, setRole] = useState('');
   const [department, setDepartment] = useState('');
   const [image, setImage] = useState(null);
-  const [password,setPassword] = useState('')
+  const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null)
+
+
+  const handleFileChange = (e) => {
+    setImage(e.target.files[0])
+    setPreviewImage(URL.createObjectURL(e.target.files[0]))
+
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,7 +59,7 @@ const AddEmployee = () => {
       const response = await addNewEmployee(formData);
       if (response.status === 201) {
         toast.success('Employee added successfully.');
-      
+
         setName('');
         setEmail('');
         setEmployeeId('');
@@ -76,137 +84,142 @@ const AddEmployee = () => {
   return (
     <div className="p-5 mx-auto">
       <BackButton />
-      <Heading text="Add New Employee" />
+     
 
-      <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
-        <div className="flex md:flex-row flex-col gap-3">
-         
+      <form className="flex flex-col gap-6   max-w-2xl w-full mx-auto" onSubmit={handleSubmit}>
+        {/* Image Upload Section */}
+        <div className="flex flex-col items-center gap-3">
+          <label htmlFor="employee" className="cursor-pointer">
+            <img
+              src={previewImage || '/user.png'}
+              alt="user"
+              className="w-32 h-32 rounded-full shadow-lg object-cover"
+            />
+          </label>
           <input
             type="file"
-            className='w-full input input-neutral'
-            name="employee"
+            className="hidden"
             id="employee"
-            onChange={(e) => setImage(e.target.files[0])}
+            name="employee"
+            onChange={handleFileChange}
             required
-
           />
-            <Input
+        </div>
+
+        {/* Personal Details */}
+        <div className="grid md:grid-cols-2 gap-4">
+          <Input
             type="text"
             placeholder="Enter employee name"
             value={name}
             setValue={setName}
           />
-        </div>
-
-        <div className="flex md:flex-row flex-col gap-3">
-        
           <Input
             type="email"
             placeholder="Enter employee email"
             value={email}
             setValue={setEmail}
           />
-           <Input
+        </div>
+
+        {/* Password & Employee Info */}
+        <div className="grid md:grid-cols-2 gap-4">
+          <Input
             type="password"
             placeholder="Enter password"
             value={password}
             setValue={setPassword}
           />
-
-        </div>
-
-        <div className="flex md:flex-row flex-col gap-3">
           <Input
             type="text"
             placeholder="Enter employee ID"
             value={employeeId}
             setValue={setEmployeeId}
           />
+        </div>
+
+        {/* Date of Birth & Gender */}
+        <div className="grid md:grid-cols-2 gap-4">
           <Input
             type="date"
             value={dob}
             setValue={setDob}
           />
-        </div>
-
-        <div className="flex md:flex-row flex-col gap-3">
           <select
             className="select select-primary w-full"
             value={gender}
             onChange={(e) => setGender(e.target.value)}
             required
           >
-            <option value="" disabled>
-              Select Gender
-            </option>
+            <option value="" disabled>Select Gender</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="other">Other</option>
           </select>
+        </div>
 
+        {/* Marital Status & Designation */}
+        <div className="grid md:grid-cols-2 gap-4">
           <select
             className="select select-primary w-full"
             value={maritalStatus}
             onChange={(e) => setMaritalStatus(e.target.value)}
             required
           >
-            <option value="" disabled>
-              Marital Status
-            </option>
+            <option value="" disabled>Marital Status</option>
             <option value="single">Single</option>
             <option value="married">Married</option>
           </select>
-        </div>
-
-        <div className="flex md:flex-row flex-col gap-3">
           <Input
             type="text"
             placeholder="Enter designation"
             value={designation}
             setValue={setDesignation}
           />
+        </div>
+
+        {/* Salary & Department */}
+        <div className="grid md:grid-cols-2 gap-4">
           <Input
             type="number"
             placeholder="Enter salary"
             value={salary}
             setValue={setSalary}
           />
-        </div>
-
-        <div className="flex md:flex-row flex-col gap-3">
           <select
             className="select select-primary w-full"
             value={department}
             onChange={(e) => setDepartment(e.target.value)}
             required
           >
-            <option value="" disabled>
-              Select Department
-            </option>
+            <option value="" disabled>Select Department</option>
             {departments.map((dep) => (
               <option key={dep._id} value={dep._id}>
                 {dep.departmentName}
               </option>
             ))}
           </select>
+        </div>
 
+        {/* Role Selection */}
+        <div className="grid md:grid-cols-2 gap-4">
           <select
             className="select select-primary w-full"
             value={role}
             onChange={(e) => setRole(e.target.value)}
             required
           >
-            <option value="" disabled>
-              Select Role
-            </option>
+            <option value="" disabled>Select Role</option>
             <option value="employee">Employee</option>
             <option value="admin">Admin</option>
           </select>
+          <Button text="Add Employee" loading={loading} />
+
         </div>
 
        
-        <Button text="Add Employee" loading={loading} />
       </form>
+
     </div>
   );
 };
