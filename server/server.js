@@ -6,6 +6,7 @@ const connectDb = require('./db/conn')
 const authRouter = require('./routes/authRoutes')
 const departmentRouter = require('./routes/departmentRoutes')
 const employeeRouter = require('./routes/employeeRoutes')
+const salaryRouter = require('./routes/salaryRoutes')
 const app = express()
 
 const port = process.env.PORT || 3000
@@ -28,6 +29,8 @@ app.get('/', (req, res) => {
 app.use("/api/auth",authRouter)
 app.use("/api/departments",departmentRouter)
 app.use("/api/employees",employeeRouter)
+app.use("/api/salaries",salaryRouter)
+
 
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`)
