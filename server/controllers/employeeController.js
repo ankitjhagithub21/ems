@@ -73,7 +73,7 @@ const getAllEmployees = async (req, res) => {
 
         const employees = await Employee.find().populate({
             path:"userId",
-            select:"name profileImage"
+            select:"name profileImage role email"
         }).populate({
             path:"department",
             select:"departmentName"
@@ -96,12 +96,13 @@ const getEmployeeById = async (req, res) => {
     try {
         const { employeeId } = req.params;
 
-        const employee = await employee.findById(employeeId)
+        const employee = await Employee.findById(employeeId)
 
         if (!employee) {
-            return res.status(404).json({ message: "employee not found." })
+            return res.status(404).json({ message: "Employee not found." })
 
         }
+
         return res.status(200).json(employee)
 
 
@@ -112,31 +113,48 @@ const getEmployeeById = async (req, res) => {
 
 const editEmployee = async (req, res) => {
     try {
-        const { employeeId } = req.params;
-        const { employeeName, description } = req.body;
+        const { id } = req.params; 
 
-        // Check if all required fields are provided
-        if (!employeeName || !description) {
-            return res.status(400).json({ message: "All fields are required." });
+        // Find the employee by ID
+        const employee = await Employee.findById(id);
+        if (!employee) {
+            return res.status(404).json({ message: "Employee not found." });
         }
 
-        // Update the employee and return the new version
-        const employee = await employee.findByIdAndUpdate(
-            employeeId,
-            {
-                $set: {
-                    employeeName,
-                    description,
-                },
-            },
-            { new: true }
+        let result = {};
+        if (req.file) {
+            // Upload new image to Cloudinary
+            result = await uploadImage(req.file.path);
+
+            if (!result) {
+                return res.status(400).json({ message: "Error uploading image." });
+            }
+
+            // Find the related user to delete the old image
+            const user = await User.findById(employee.userId);
+            if (!user) {
+                return res.status(400).json({ message: "User not found." });
+            }
+
+            // Delete the old image from Cloudinary if publicId exists
+            if (user.publicId) {
+                await deleteImage(user.publicId);
+            }
+
+            // Update the user's profile image and publicId
+            user.profileImage = result.secureUrl;
+            user.publicId = result.publicId;
+            await user.save(); 
+        }
+
+        // Update employee details
+        const updatedEmployee = await Employee.findByIdAndUpdate(
+            id,
+            { ...req.body }, // Update employee with new details from the request body
+            { new: true } // Return the updated employee
         );
 
-        if (!employee) {
-            return res.status(404).json({ message: "employee not found." });
-        }
-
-        return res.status(200).json(employee);
+        return res.status(200).json(updatedEmployee);
     } catch (error) {
         console.error("Error updating employee:", error); // Log the error for debugging
         return res.status(500).json({ message: "Server error." });

@@ -79,30 +79,40 @@ const AddEmployee = () => {
       <Heading text="Add New Employee" />
 
       <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="employee">Choose Image</label>
+        <div className="flex md:flex-row flex-col gap-3">
+         
           <input
             type="file"
+            className='w-full input input-neutral'
             name="employee"
             id="employee"
             onChange={(e) => setImage(e.target.files[0])}
             required
-          />
-        </div>
 
-        <div className="flex md:flex-row flex-col gap-3">
-          <Input
+          />
+            <Input
             type="text"
             placeholder="Enter employee name"
             value={name}
             setValue={setName}
           />
+        </div>
+
+        <div className="flex md:flex-row flex-col gap-3">
+        
           <Input
             type="email"
             placeholder="Enter employee email"
             value={email}
             setValue={setEmail}
           />
+           <Input
+            type="password"
+            placeholder="Enter password"
+            value={password}
+            setValue={setPassword}
+          />
+
         </div>
 
         <div className="flex md:flex-row flex-col gap-3">
@@ -194,13 +204,7 @@ const AddEmployee = () => {
           </select>
         </div>
 
-        <Input
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            setValue={setPassword}
-          />
-
+       
         <Button text="Add Employee" loading={loading} />
       </form>
     </div>
